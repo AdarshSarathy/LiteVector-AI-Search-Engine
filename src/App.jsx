@@ -152,11 +152,18 @@ export default function App() {
 
       const rawResults = await response.json()
       console.log("INCOMING API PAYLOAD", rawResults)
-
-      let targetText = `Here are the top matches from your vector database. \n\n`
-      rawResults.results.forEach((result, index) => {
-        targetText += `[Match ${index + 1} | Score: ${result.score.toFixed(3)}]\n${result.text}\n\n`
-      })
+      if (documents.length != 0) {
+        let targetText = `Here are the top matches from your vector database. \n\n`
+        rawResults.results.forEach((result, index) => {
+          targetText += `[Match ${index + 1} | Score: ${result.score.toFixed(3)}]\n${result.text}\n\n`
+        })
+      }
+      else {
+        let targetText = `No documents uploaded.Here are the top matches from pre-loaded vector database. \n\n`
+        rawResults.results.forEach((result, index) => {
+          targetText += `[Match ${index + 1} | Score: ${result.score.toFixed(3)}]\n${result.text}\n\n`
+        })
+      }
 
       setMessages(prev => [...prev, {role: 'assistant', text: ''}])
 
